@@ -1,0 +1,16 @@
+version: "3.3"
+
+services:
+  base:
+    image: grace_base
+    build:
+      context: ./docker/base
+      args:
+        TZ: ${TZ}
+        GRACE_DOMAIN: ${GRACE_DOMAIN}
+        GRACE_APP_ROOT_DIR: ${GRACE_APP_ROOT_DIR}
+
+  nginx:
+    image: grace_nginx
+    build:
+      context:  ./docker/nginx

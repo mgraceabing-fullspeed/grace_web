@@ -1,0 +1,35 @@
+server {
+    # listen 80 default_server;
+    # listen 443 ssl;
+
+    server_name ${GRACE_DOMAIN};
+    root ${GRACE_APP_ROOT_DIR}/public;
+    index  index.php;
+
+    # ssl on;
+    # ssl_certificate /etc/nginx/conf.d/ssl/${SSL_CRT_GRACE};
+    # ssl_certificate_key /etc/nginx/conf.d/ssl/${SSL_KEY_GRACE};
+    # ssl_session_timeout 24h;
+
+    location ~ \.php(/|$) {
+        fastcgi_pass grace:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+
+        fastcgi_connect_timeout 60;
+        fastcgi_send_timeout 300;
+        fastcgi_read_timeout 300;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+    }
+
+    location ~ ^/(.*)$ {
+        try_files $uri /index.php?$args;
+    }
+
+    access_log /var/log/nginx/${GRACE_DOMAIN}.access.log;
+    error_log /var/log/nginx/${GRACE_DOMAIN}.error.log;
+}
