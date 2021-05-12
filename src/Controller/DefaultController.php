@@ -21,4 +21,8 @@ class DefaultController extends AbstractController
             'title' => 'sample title'
         ]);
     }
+
+    public function test_sniffer(){
+        echo 'should fail';
+    }
 }
