@@ -80,7 +80,7 @@ jobs:
 
       - name: List of modified files
         run:  |
-          echo ${{ steps.files.outputs.all }}
+          echo ${{ steps.files.outputs.added_modified }}
       #  run: |
       #    for changed_file in ${{ steps.files.outputs.all }}; do
       #      echo "Do something with this ${changed_file}."
