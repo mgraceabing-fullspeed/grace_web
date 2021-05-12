@@ -66,4 +66,8 @@ jobs:
       #      echo "Do something with this ${changed_file}."
       #    done
 
+      - name: Check Coding Standard Violations
+        run:  |
+          php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.all }}
+
 
