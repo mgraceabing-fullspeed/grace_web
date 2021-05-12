@@ -4,16 +4,16 @@ name: "PHP CodeSniffer"
 
 
 # Controls when the action will run. 
-on: [ push, pull_request ]
+# on: [ push, pull_request ]
 
-# on:
+on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  # push:
-  # pull_request:
-  #  paths:
-  #    - "**.php"
-  #    - "aas-coding-ruleset.xml"
-  #    - ".github/workflows/phpcs.yml"
+  push:
+  pull_request:
+    paths:
+      - "**.php"
+      - "aas-coding-ruleset.xml"
+      - ".github/workflows/phpcs.yml"
 
 
 # on:
