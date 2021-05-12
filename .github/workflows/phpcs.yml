@@ -55,7 +55,10 @@ jobs:
       #   run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
 
       - name: Get modified files
+        id: files
         uses: jitterbit/get-changed-files@v1
+
+      - name: List of modified files
         run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."

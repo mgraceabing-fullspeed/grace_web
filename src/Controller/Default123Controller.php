@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class Default1Controller extends AbstractController
+class Default123Controller extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -23,7 +23,7 @@ class Default1Controller extends AbstractController
     }
 
     public function test_sniffer(){
-        $arraay = ['sample1' => 'val1', 'sample2' => val2];
+        $arraay = ['sample1' => 'val1', 'sample2' => 'val2'];
         echo 'yes';
     }
 }
