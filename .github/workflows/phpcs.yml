@@ -51,5 +51,14 @@ jobs:
       #    phpcs_path: php phpcs.phar
       #    standard: aas-coding-ruleset.xml
 
-      - name: Check Coding Standard Violations
-        run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
+      # - name: Check Coding Standard Violations
+      #   run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
+
+      - name: Get modified files
+        uses: jitterbit/get-changed-files@v1
+        run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            echo "Do something with this ${changed_file}."
+          done
+
+
