@@ -17,13 +17,18 @@ class DefaultController extends AbstractController
             'path' => 'src/Controller/DefaultController.php',
         ]);*/
 
-        return $this->render('default/index.html.twig', [
-            'title' => 'sample title'
-        ]);
+        return $this->render('default/index.html.twig',
+            [
+                'title' => 'sample title'
+            ]
+        );
     }
 
-    public function test_sniffer(){
-        $arraay = ['sample1' => 'val1ss', 'sample2' => 'val2z'];
-        echo 'yes';
+    public function testSniffer()
+    {
+        $arraay = [
+            'sample1' => 'val1ss',
+            'sample2' => 'val2z'
+        ];
     }
 }
