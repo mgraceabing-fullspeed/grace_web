@@ -4,6 +4,8 @@
         https://github.com/FullSpeedInc/admatrix_admin_system_docs/blob/master/documents/regulations/coding/php_coding_conventions.md
     </description>
 
+    <file>.</file>
+
     <!--exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*.js</exclude-pattern>
