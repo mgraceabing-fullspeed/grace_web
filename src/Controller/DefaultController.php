@@ -25,7 +25,7 @@ class DefaultController extends AbstractController
         );
     }
 
-    public function testSniffer()
+    public function test_sniffer()
     {
         $arraay = [
             'sample1' => 'val1ss',
