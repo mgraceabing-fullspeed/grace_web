@@ -21,10 +21,4 @@ class DefaultController extends AbstractController
             'title' => 'sample title'
         ]);
     }
-
-    public function test_sniffer() {
-        echo 'should fail';
-
-        $aaa = ['sample1' => 'val1', 'sample2' => 'val2']
-    }
 }
