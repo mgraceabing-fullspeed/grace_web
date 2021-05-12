@@ -24,8 +24,4 @@ class DefaultController extends AbstractController
             ]
         );
     }
-
-    public function test_sniffer(){
-        echo 'asdasd';
-    }
 }
