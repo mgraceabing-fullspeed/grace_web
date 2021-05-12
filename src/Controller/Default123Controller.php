@@ -23,7 +23,7 @@ class Default123Controller extends AbstractController
     }
 
     public function test_sniffer(){
-        $arraay = ['sample1' => 'val1', 'sample2' => 'val2'];
+        $arraay = ['sample1' => 'val1', 'sample2' => 'val2aaa'];
         echo 'yes';
     }
 }

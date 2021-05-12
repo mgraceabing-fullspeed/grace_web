@@ -59,9 +59,11 @@ jobs:
         uses: jitterbit/get-changed-files@v1
 
       - name: List of modified files
-        run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+        run:  |
+          echo ${{ steps.files.outputs.all }}
+      #  run: |
+      #    for changed_file in ${{ steps.files.outputs.all }}; do
+      #      echo "Do something with this ${changed_file}."
+      #    done
 
 
