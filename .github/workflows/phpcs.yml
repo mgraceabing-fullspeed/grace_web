@@ -1,0 +1,93 @@
+# This is a basic workflow to help you get started with Actions
+
+name: "PHP CodeSniffer"
+
+
+# Controls when the action will run. 
+on: [ push, pull_request ]
+
+# on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  # push:
+  # pull_request:
+  #  paths:
+  #    - "**.php"
+  #    - "aas-coding-ruleset.xml"
+  #    - ".github/workflows/phpcs.yml"
+
+
+# on:
+#  push:
+#    branches: [ develop ]
+#  pull_request:
+#    branches: [ develop ]
+
+# on: [ push, pull_request ]
+# on: [pull_request]
+# on: pull_request
+# on:
+#     pull_request:
+#       paths:
+#         - "**.php"
+#         - "phpcs.xml"
+#         - ".github/workflows/phpcs.yml"
+
+  # Allows you to run this workflow manually from the Actions tab
+  # workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  phpcs:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+      
+      # we may use whatever way to install phpcs, just specify the path on the next step
+      # however, curl seems to be the fastest
+      - name: Install PHP_CodeSniffer
+        run: |
+          curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+          php phpcs.phar --version
+
+      # - name: Run PHP_CodeSniffer
+      #  uses: thenabeel/action-phpcs@v8
+      #  with:
+      #    files: "**.php" # you may customize glob as needed
+      #    phpcs_path: php phpcs.phar
+      #    standard: aas-coding-ruleset.xml
+
+      # - name: Check Coding Standard Violations
+      #   run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
+
+      - name: Get modified files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: List of modified files
+        run:  |
+          echo ${{ steps.files.outputs.all }}
+      #  run: |
+      #    for changed_file in ${{ steps.files.outputs.all }}; do
+      #      echo "Do something with this ${changed_file}."
+      #    done
+
+      - name: Check Coding Standard Violations
+        run:  |
+          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
+
+
