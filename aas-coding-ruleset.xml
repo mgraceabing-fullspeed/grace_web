@@ -3,6 +3,18 @@
     <description>PHP Coding Convention.
         https://github.com/FullSpeedInc/admatrix_admin_system_docs/blob/master/documents/regulations/coding/php_coding_conventions.md
     </description>
+
+    <file>.</file>
+
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+    <!-- Show progress, show the error codes for each message (source). -->
+    <arg value="ps" />
+
+    <!-- Strip the filepaths in reports down to the relevant bit. -->
+    <arg name="basepath" value="./" />
+
     <rule ref="Generic.ControlStructures.InlineControlStructure">
         <properties>
             <property name="error" value="false" />
