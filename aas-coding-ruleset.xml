@@ -10,9 +10,6 @@
     <exclude-pattern>*.css</exclude-pattern>
     <include-pattern>**.php/</include-pattern-->
 
-    <!-- Show progress, show the error codes for each message (source). -->
-    <arg value="ps" />
-
     <rule ref="Generic.ControlStructures.InlineControlStructure">
         <properties>
             <property name="error" value="false" />
