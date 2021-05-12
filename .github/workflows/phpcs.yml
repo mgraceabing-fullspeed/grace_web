@@ -80,7 +80,7 @@ jobs:
 
       - name: List of modified files
         run:  |
-          echo ${{ steps.files.outputs.added_modified }}
+          echo ${{ steps.files.outputs.all }}
       #  run: |
       #    for changed_file in ${{ steps.files.outputs.all }}; do
       #      echo "Do something with this ${changed_file}."
@@ -88,6 +88,6 @@ jobs:
 
       - name: Check Coding Standard Violations
         run:  |
-          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.all }}
+          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
 
 

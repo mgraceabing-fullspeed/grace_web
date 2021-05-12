@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class DefaultaController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -20,7 +20,7 @@ class DefaultController extends AbstractController
         return $this->render(
             'default/index.html.twig',
             [
-                'title' => 'sample title',
+                'title' => 'sample title'
             ]
         );
     }
