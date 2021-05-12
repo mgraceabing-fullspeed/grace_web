@@ -24,13 +24,4 @@ class DefaultController extends AbstractController
             ]
         );
     }
-
-    public function test_sniffer()
-    {
-        $arraay = [
-            'sample1' => 'val1ss',
-            'sample2' => 'val2z',
-            'sample3' => 'val3'
-        ];
-    }
 }
