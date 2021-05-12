@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class Default123Controller extends AbstractController
+class DefaultaaaaController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -17,13 +17,20 @@ class Default123Controller extends AbstractController
             'path' => 'src/Controller/DefaultController.php',
         ]);*/
 
-        return $this->render('default/index.html.twig', [
-            'title' => 'sample title'
-        ]);
+        return $this->render(
+            'default/index.html.twig',
+            [
+                'title' => 'sample title'
+            ]
+        );
     }
 
-    public function test_sniffer(){
-        $arraay = ['sample1' => 'val1', 'sample2' => 'val2aaaaaaz'];
-        echo 'yes';
+    public function testSniffer()
+    {
+        $arraay = [
+            'sample1' => 'val1ss',
+            'sample2' => 'val2z',
+            'sample3' => 'val3'
+        ];
     }
 }

@@ -29,7 +29,8 @@ class DefaultController extends AbstractController
     {
         $arraay = [
             'sample1' => 'val1ss',
-            'sample2' => 'val2z'
+            'sample2' => 'val2z',
+            'sample3' => 'val3'
         ];
     }
 }
