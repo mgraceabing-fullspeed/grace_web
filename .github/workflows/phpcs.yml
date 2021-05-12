@@ -88,6 +88,6 @@ jobs:
 
       - name: Check Coding Standard Violations
         run:  |
-          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
+          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php --severity=3 ${{ steps.files.outputs.added_modified }}
 
 
