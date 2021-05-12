@@ -47,4 +47,4 @@ jobs:
         with:
           files: "**.php" # you may customize glob as needed
           phpcs_path: php phpcs.phar
-          standard: aas-coding-ruleset.xml
+          standard: phpcs.xml
