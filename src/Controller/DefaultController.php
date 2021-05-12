@@ -24,5 +24,7 @@ class DefaultController extends AbstractController
 
     public function test_sniffer() {
         echo 'should fail';
+
+        $aaa = ['sample1' => 'val1',]
     }
 }
