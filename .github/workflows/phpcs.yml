@@ -43,9 +43,9 @@ jobs:
           curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
           php phpcs.phar --version
 
-      - name: action-php-codesniffer
-        uses: tinovyatkin/action-php-codesniffer@v1
+      - name: action-phpcs
+        uses: thenabeel/action-phpcs@v8
         with:
           files: "**.php" # you may customize glob as needed
           phpcs_path: php phpcs.phar
-          standard: phpcs.xml
+          standard: aas-coding-ruleset.xml
