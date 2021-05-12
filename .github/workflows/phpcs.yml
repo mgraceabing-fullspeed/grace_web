@@ -9,6 +9,7 @@ on:
   pull_request:
     paths:
       - "**.php"
+      - "aas-coding-ruleset.xml"
       - ".github/workflows/phpcs.yml"
 
   # Allows you to run this workflow manually from the Actions tab
