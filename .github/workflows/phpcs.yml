@@ -52,4 +52,4 @@ jobs:
       #    standard: aas-coding-ruleset.xml
 
       - name: Check Coding Standard Violations
-        run: php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php
+        run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml
