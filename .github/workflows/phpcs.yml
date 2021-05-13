@@ -69,8 +69,8 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs -d\n)"
-          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs -d\n)"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs)"
+          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs)"
           echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
 
@@ -85,11 +85,11 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo ${{ needs.get_changed_files.outputs.allUnfiltered }} \
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }} \n
 
       - name: Get list of all the modified files excluding deleted files
         run: |
-          echo ${{ needs.get_changed_files.outputs.allFilteredACMRT }} \
+          echo ${{ needs.get_changed_files.outputs.allFilteredACMRT }} \n
 
   print_changed_php_files:
     runs-on: ubuntu-latest
@@ -102,11 +102,11 @@ jobs:
     steps:
       - name: Get status list of all the modified php files
         run: |
-          echo ${{ needs.get_changed_files.outputs.phpUnfiltered }} \
+          echo ${{ needs.get_changed_files.outputs.phpUnfiltered }} \n
 
       - name: Get list of all the modified php files excluding deleted files
         run: |
-          echo ${{ needs.get_changed_files.outputs.phpFilteredACMRT }} \
+          echo ${{ needs.get_changed_files.outputs.phpFilteredACMRT }} \n
 
   validate_coding_standard:
     runs-on: ubuntu-latest
