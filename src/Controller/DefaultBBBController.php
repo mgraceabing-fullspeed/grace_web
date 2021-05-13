@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultAAController extends AbstractController
+class DefaultBBBController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -17,10 +17,16 @@ class DefaultAAController extends AbstractController
             'path' => 'src/Controller/DefaultController.php',
         ]);*/
 
-        return $this->render('default/index.html.twig',
+        return $this->render(
+            'default/index.html.twig',
             [
-                'title' => 'sample titleaaaaaaaazaaaaaaaaaa';
+                'title' => 'sample title'
             ]
         );
+    }
+
+    public function FunctionName($value='')
+    {
+        echo 'test-yes-aaaaazaaaaazzaaaaaa';
     }
 }

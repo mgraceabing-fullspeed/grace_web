@@ -63,20 +63,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get changed files
+      - name: Get changed files excluding deleted files
         id: changes
         # Set outputs using the command.
         run: |
-          echo "::set-output name=all::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
-          echo "::set-output name=php::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep .php$ | xargs)"
+          echo "::set-output name=all::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
+          echo "::set-output name=php::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
 
       - name: List of all the modified files
-        run: echo $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
       #   run: |
       #     echo $(git diff --name-only --diff-filter=ACMRT ${{ github.sha }} | xargs)
 
       - name: List of all the modified php files
-        run: echo $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep .php$ | xargs)
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
       #   run: |
       #     echo $(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)
 
