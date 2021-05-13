@@ -9,7 +9,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*.js</exclude-pattern>
     <exclude-pattern>*.css</exclude-pattern>
-    <include-pattern>**.php/</include-pattern
+    <include-pattern>**.php/</include-pattern  
     -->
 
     <rule ref="Generic.ControlStructures.InlineControlStructure">

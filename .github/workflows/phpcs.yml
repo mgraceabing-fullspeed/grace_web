@@ -60,6 +60,8 @@ jobs:
         # Make sure we have some code to diff.
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Get changed files
         id: changes
@@ -74,7 +76,7 @@ jobs:
 
       - name: List of all the modified php files
         run: |
-          echo $(git diff --name-only --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)
+          echo $(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)
 
 
   lint-all-files:
