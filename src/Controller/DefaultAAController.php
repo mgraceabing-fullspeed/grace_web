@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class DefaultAAController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -23,10 +23,5 @@ class DefaultController extends AbstractController
                 'title' => 'sample title'
             ]
         );
-    }
-
-    public function FunctionName($value='')
-    {
-        echo 'test';
     }
 }

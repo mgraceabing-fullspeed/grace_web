@@ -50,32 +50,64 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  phpcs:
-    # The type of runner that the job will run on
+  getChangedfiles:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changes.outputs.all}}
+      ts: ${{ steps.changes.outputs.ts }}
+    steps:
+        # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "::set-output name=ts::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
+
+
+  lint:
+    runs-on: ubuntu-latest
+    # require the first job to have ran
+    needs: getChangedfiles
+    # only run there are changed files
+    if: ${{needs.getChangedfiles.outputs.ts}}
+    steps:
+      - name: echo changed files
+        run: echo ${{needs.getChangedfiles.outputs.ts}}
+
+
+  # This workflow contains a single job called "build"
+  # phpcs:
+    # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+
+    # require the first job to have ran
+  #   needs: getChangedfiles
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+  #   steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+  #     - name: Run a one-line script
+  #       run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  #     - name: Run a multi-line script
+  #       run: |
+  #         echo Add other actions to build,
+  #         echo test, and deploy your project.
       
       # we may use whatever way to install phpcs, just specify the path on the next step
       # however, curl seems to be the fastest
-      - name: Install PHP_CodeSniffer
-        run: |
-          curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-          php phpcs.phar --version
+  #     - name: Install PHP_CodeSniffer
+  #       run: |
+  #         curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+  #         php phpcs.phar --version
 
       # - name: Run PHP_CodeSniffer
       #  uses: thenabeel/action-phpcs@v8
@@ -87,20 +119,20 @@ jobs:
       # - name: Check Coding Standard Violations
       #   run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
 
-      - name: Get modified files
-        id: files
-        uses: jitterbit/get-changed-files@v1
+  #     - name: Get modified files
+  #       id: files
+  #       uses: jitterbit/get-changed-files@v1
 
-      - name: List of modified files
-        run:  |
-          echo ${{ steps.files.outputs.all }}
+  #     - name: List of modified files
+  #       run:  |
+  #         echo ${{ steps.files.outputs.all }}
       #  run: |
       #    for changed_file in ${{ steps.files.outputs.all }}; do
       #      echo "Do something with this ${changed_file}."
       #    done
 
-      - name: Check Coding Standard Violations
-        run:  |
-          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
+  #     - name: Check Coding Standard Violations
+  #       run:  |
+  #         php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
 
 
