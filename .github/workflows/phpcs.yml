@@ -50,7 +50,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  getChangedfiles:
+  get_changed_files:
     runs-on: ubuntu-latest
 
     # Map a step output to a job output
@@ -97,33 +97,50 @@ jobs:
      #   run: |
      #     echo ${{ steps.changedFiles.outputs.php }}
 
-  print-all-changed-files:
+  print_all_changed_files:
     runs-on: ubuntu-latest
 
-    # require the first job to have ran
-    needs: getChangedfiles
+    # require the first job to have ran and run this job in sequence
+    needs: get_changed_files
 
     # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs.allUnfiltered}}
+    if: ${{needs.get_changed_files.outputs.allUnfiltered}}
     steps:
-      - name: Get list of all the modified files
-        run: echo ${{needs.getChangedfiles.outputs.allUnfiltered}}
+      - name: Get status list of all the modified files
+        run: echo ${{needs.get_changed_files.outputs.allUnfiltered}}
 
       - name: Get list of all the modified files excluding deleted files
-        run: echo ${{needs.getChangedfiles.outputs.allFilteredACMRT}}
+        run: echo ${{needs.get_changed_files.outputs.allFilteredACMRT}}
 
-  print-changed-php-files:
+  print_changed_php_files:
     runs-on: ubuntu-latest
 
-    # require the first job to have ran
-    needs: getChangedfiles
+    # require the first job to have ran and run this job in sequence
+    needs: get_changed_files
 
     # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs.phpUnfiltered}}
+    if: ${{needs.get_changed_files.outputs.phpUnfiltered}}
     steps:
-      - name: Get list of all the modified php files
-        run: echo ${{needs.getChangedfiles.outputs.phpUnfiltered}}
+      - name: Get status list of all the modified php files
+        run: echo ${{needs.get_changed_files.outputs.phpUnfiltered}}
 
       - name: Get list of all the modified php files excluding deleted files
-        run: echo ${{needs.getChangedfiles.outputs.phpFilteredACMRT}}
+        run: echo ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
+
+  validate_coding_standard:
+    runs-on: ubuntu-latest
+
+    # require prev jobs to have ran and run this job in sequence
+    needs: [print_all_changed_files, print_changed_php_files]
+
+    # only run there are changed files
+    if: ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
+    steps:
+      - name: Install PHP_CodeSniffer
+        run: |
+          curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+          php phpcs.phar --version
+
+      - name: Check Coding Standard Violations
+        run: php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
 
