@@ -50,12 +50,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  getChangedfiles:
+  phpcs:
     runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      all: ${{ steps.changes.outputs.all }}
-      php: ${{ steps.changes.outputs.php }}
     steps:
         # Make sure we have some code to diff.
       - name: Checkout repository
@@ -63,108 +59,29 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get list of all the modified files
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+
+      - name: Get list of all the modified php files
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+
       - name: Get changed files excluding deleted files
-        id: changes
-        # Set outputs using the command.
+        id: changedFiles
         run: |
           echo "::set-output name=all::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=php::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
 
-      - name: List of all the modified files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
-      #   run: |
-      #     echo $(git diff --name-only --diff-filter=ACMRT ${{ github.sha }} | xargs)
-
-      - name: List of all the modified php files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
-      #   run: |
-      #     echo $(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)
-
-      - name: get changed files
-        id: getfile
+      - name: echo output all
         run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
+          echo ${{ steps.changedFiles.outputs.all }}
 
-      - name: echo output
+      - name: echo output php
         run: |
-          echo ${{ steps.getfile.outputs.files }}
+          echo ${{ steps.changedFiles.outputs.php }}
 
 
-  lint-all-files:
-    runs-on: ubuntu-latest
-    # require the first job to have ran
-    needs: getChangedfiles
-    # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs}}
-    steps:
-      - name: echo changed files
-        run: echo ${{needs.getChangedfiles.outputs.all}}
-
-  lint-php:
-    runs-on: ubuntu-latest
-    # require the first job to have ran
-    needs: getChangedfiles
-    # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs.php}}
-    steps:
-      - name: echo changed files
-        run: echo ${{needs.getChangedfiles.outputs.php}}
-
-
-  # This workflow contains a single job called "build"
-  # phpcs:
-    # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-
-    # require the first job to have ran
-  #   needs: getChangedfiles
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-  #     - name: Run a one-line script
-  #       run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-  #     - name: Run a multi-line script
-  #       run: |
-  #         echo Add other actions to build,
-  #         echo test, and deploy your project.
-      
-      # we may use whatever way to install phpcs, just specify the path on the next step
-      # however, curl seems to be the fastest
-  #     - name: Install PHP_CodeSniffer
-  #       run: |
-  #         curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-  #         php phpcs.phar --version
-
-      # - name: Run PHP_CodeSniffer
-      #  uses: thenabeel/action-phpcs@v8
-      #  with:
-      #    files: "**.php" # you may customize glob as needed
-      #    phpcs_path: php phpcs.phar
-      #    standard: aas-coding-ruleset.xml
-
-      # - name: Check Coding Standard Violations
-      #   run: php phpcs.phar --standard=PEAR,Squiz,aas-coding-ruleset.xml --extensions=php
-
-  #     - name: Get modified files
-  #       id: files
-  #       uses: jitterbit/get-changed-files@v1
-
-  #     - name: List of modified files
-  #       run:  |
-  #         echo ${{ steps.files.outputs.all }}
-      #  run: |
-      #    for changed_file in ${{ steps.files.outputs.all }}; do
-      #      echo "Do something with this ${changed_file}."
-      #    done
-
-  #     - name: Check Coding Standard Violations
-  #       run:  |
-  #         php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
-
+      if: ${{ steps.changedFiles.outputs.php }}
+      - name: here run checking php
+        run: |
+          echo ${{ steps.changedFiles.outputs.php }}
 

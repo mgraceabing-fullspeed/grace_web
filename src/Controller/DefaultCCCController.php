@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultBBBController extends AbstractController
+class DefaultCCCController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -27,6 +27,6 @@ class DefaultBBBController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'test-yes-aaaaazaaaaazzaaaaaa';
+        echo 'test-yes-aaaaazaaaaazzaaaaaaaa';
     }
 }
