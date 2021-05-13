@@ -59,12 +59,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get list of all the modified files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
-
-      - name: Get list of all the modified php files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
-
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
@@ -79,8 +73,16 @@ jobs:
         run: |
           echo ${{ steps.changedFiles.outputs.php }}
 
+      if: ${{ steps.changedFiles.outputs.all }}
+      - name: Get list of all the modified files
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+
+      if: ${{ steps.changedFiles.outputs.php }}
+      - name: Get list of all the modified php files
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+
+      if: ${{ steps.changedFiles.outputs.php }}
       - name: here run checking php
-        if: ${{ steps.changedFiles.outputs.php }}
         run: |
           echo ${{ steps.changedFiles.outputs.php }}
 
