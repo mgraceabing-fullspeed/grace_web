@@ -69,7 +69,7 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs -d\n)"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs -n)"
           echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs -d\n)"
           echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
