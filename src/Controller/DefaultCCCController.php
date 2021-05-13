@@ -27,6 +27,6 @@ class DefaultCCCController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'test-yes-aaaaazaaaaazzaaaaaaaa';
+        echo 'test-yes-aaaaazaaaaazzaaaaaaaaaa';
     }
 }

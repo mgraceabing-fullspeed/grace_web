@@ -79,9 +79,8 @@ jobs:
         run: |
           echo ${{ steps.changedFiles.outputs.php }}
 
-
-      if: ${{ steps.changedFiles.outputs.php }}
       - name: here run checking php
+        if: ${{ steps.changedFiles.outputs.php }}
         run: |
           echo ${{ steps.changedFiles.outputs.php }}
 
