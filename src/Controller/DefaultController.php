@@ -27,6 +27,6 @@ class DefaultController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'test-yes-aaaaazaaaaazzaaaaaasssaa';
+        echo 'test-yes-aaaaaazaaaaazzaaaaaasssaaaaaa';
     }
 }

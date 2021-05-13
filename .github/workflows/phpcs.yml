@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # require prev jobs to have ran and run this job in sequence
-    needs: [print_all_changed_files, print_changed_php_files]
+    needs: [get_changed_files, print_all_changed_files, print_changed_php_files]
 
     # only run there are changed files
     if: ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
