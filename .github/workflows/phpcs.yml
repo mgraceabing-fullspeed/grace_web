@@ -68,12 +68,12 @@ jobs:
           echo "::set-output name=php::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)"
 
       - name: List of all the modified files
-          run:  |
-            echo $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
+        run:  |
+          echo $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
 
       - name: List of all the modified php files
-          run:  |
-            echo $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)
+        run:  |
+          echo $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)
 
   lint-all-files:
     runs-on: ubuntu-latest
