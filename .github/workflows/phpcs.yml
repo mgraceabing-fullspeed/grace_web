@@ -50,10 +50,15 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  phpcs:
+  getChangedfiles:
     runs-on: ubuntu-latest
+
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changedFiles.outputs.all }}
+      php: ${{ steps.changedFiles.outputs.php }}
+
     steps:
-        # Make sure we have some code to diff. test
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -65,24 +70,54 @@ jobs:
           echo "::set-output name=all::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=php::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
 
-      - name: echo output all
-        run: |
-          echo ${{ steps.changedFiles.outputs.all }}
+     # - name: echo output all
+     #   run: |
+     #     echo ${{ steps.changedFiles.outputs.all }}
 
-      - name: echo output php
-        run: |
-          echo ${{ steps.changedFiles.outputs.php }}
+     # - name: echo output php
+     #   run: |
+     #     echo ${{ steps.changedFiles.outputs.php }}
 
+     # - name: Get list of all the modified files
+     #   if: ${{ steps.changedFiles.outputs.all }}
+     #   run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+
+     # - name: Get list of all the modified php files
+     #   if: ${{ steps.changedFiles.outputs.php }}
+     #   run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+
+     # - name: here run checking php
+     #   if: ${{ steps.changedFiles.outputs.php }}
+     #   run: |
+     #     echo ${{ steps.changedFiles.outputs.php }}
+
+  get-all-changed-files:
+    runs-on: ubuntu-latest
+
+    # require the first job to have ran
+    needs: getChangedfiles
+
+    # only run there are changed files
+    if: ${{needs.getChangedfiles.outputs.all}}
+    steps:
       - name: Get list of all the modified files
-        if: ${{ steps.changedFiles.outputs.all }}
         run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
 
+      - name: Get list of all the modified files excluding deleted files
+        run: echo ${{needs.getChangedfiles.outputs.all}}
+
+  get-changed-php-files:
+    runs-on: ubuntu-latest
+
+    # require the first job to have ran
+    needs: getChangedfiles
+
+    # only run there are changed files
+    if: ${{needs.getChangedfiles.outputs.php}}
+    steps:
       - name: Get list of all the modified php files
-        if: ${{ steps.changedFiles.outputs.php }}
         run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
 
-      - name: here run checking php
-        if: ${{ steps.changedFiles.outputs.php }}
-        run: |
-          echo ${{ steps.changedFiles.outputs.php }}
+      - name: Get list of all the modified php files excluding deleted files
+        run: echo ${{needs.getChangedfiles.outputs.php}}
 
