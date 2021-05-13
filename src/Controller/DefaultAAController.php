@@ -19,7 +19,7 @@ class DefaultAAController extends AbstractController
 
         return $this->render('default/index.html.twig',
             [
-                'title' => 'sample titleaaaaaa';
+                'title' => 'sample titleaaaaaaa';
             ]
         );
     }

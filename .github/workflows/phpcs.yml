@@ -69,10 +69,12 @@ jobs:
           echo "::set-output name=php::$(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)"
 
       - name: List of all the modified files
-        run: git diff --name-status --diff-filter=ACMRT
+        run: |
+          echo $(git diff --name-only --diff-filter=ACMRT | xargs)
 
       - name: List of all the modified php files
-        run: git diff --name-status --diff-filter=ACMRT | grep .php$
+        run: |
+          echo $(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)
 
 
   lint-all-files:
