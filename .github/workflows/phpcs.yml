@@ -55,8 +55,10 @@ jobs:
 
     # Map a step output to a job output
     outputs:
-      all: ${{ steps.changedFiles.outputs.all }}
-      php: ${{ steps.changedFiles.outputs.php }}
+      allUnfiltered: ${{ steps.changedFiles.outputs.allUnfiltered }}
+      phpUnfiltered: ${{ steps.changedFiles.outputs.phpUnfiltered }}
+      allFilteredACMRT: ${{ steps.changedFiles.outputs.allFilteredACMRT }}
+      phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
     steps:
       - name: Checkout repository
@@ -67,8 +69,12 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo "::set-output name=all::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
-          echo "::set-output name=php::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }})"
+          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$)"
+          echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
+          echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
+
+
 
      # - name: echo output all
      #   run: |
@@ -91,33 +97,33 @@ jobs:
      #   run: |
      #     echo ${{ steps.changedFiles.outputs.php }}
 
-  get-all-changed-files:
+  print-all-changed-files:
     runs-on: ubuntu-latest
 
     # require the first job to have ran
     needs: getChangedfiles
 
     # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs.all}}
+    if: ${{needs.getChangedfiles.outputs.allUnfiltered}}
     steps:
       - name: Get list of all the modified files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+        run: echo ${{needs.getChangedfiles.outputs.allUnfiltered}}
 
       - name: Get list of all the modified files excluding deleted files
-        run: echo ${{needs.getChangedfiles.outputs.all}}
+        run: echo ${{needs.getChangedfiles.outputs.allFilteredACMRT}}
 
-  get-changed-php-files:
+  print-changed-php-files:
     runs-on: ubuntu-latest
 
     # require the first job to have ran
     needs: getChangedfiles
 
     # only run there are changed files
-    if: ${{needs.getChangedfiles.outputs.php}}
+    if: ${{needs.getChangedfiles.outputs.phpUnfiltered}}
     steps:
       - name: Get list of all the modified php files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+        run: echo ${{needs.getChangedfiles.outputs.phpUnfiltered}}
 
       - name: Get list of all the modified php files excluding deleted files
-        run: echo ${{needs.getChangedfiles.outputs.php}}
+        run: echo ${{needs.getChangedfiles.outputs.phpFilteredACMRT}}
 
