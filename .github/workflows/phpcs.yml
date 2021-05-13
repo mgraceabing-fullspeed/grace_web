@@ -81,13 +81,15 @@ jobs:
     needs: get_changed_files
 
     # only run there are changed files
-    if: ${{needs.get_changed_files.outputs.allUnfiltered}}
+    if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
     steps:
       - name: Get status list of all the modified files
-        run: echo ${{needs.get_changed_files.outputs.allUnfiltered}}
+        run: |
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }} 
 
       - name: Get list of all the modified files excluding deleted files
-        run: echo ${{needs.get_changed_files.outputs.allFilteredACMRT}}
+        run: |
+          echo ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
 
   print_changed_php_files:
     runs-on: ubuntu-latest
@@ -96,13 +98,15 @@ jobs:
     needs: get_changed_files
 
     # only run there are changed files
-    if: ${{needs.get_changed_files.outputs.phpUnfiltered}}
+    if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
     steps:
       - name: Get status list of all the modified php files
-        run: echo ${{needs.get_changed_files.outputs.phpUnfiltered}}
+        run: |
+          echo ${{ needs.get_changed_files.outputs.phpUnfiltered }}
 
       - name: Get list of all the modified php files excluding deleted files
-        run: echo ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
+        run: |
+          echo ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
 
   validate_coding_standard:
     runs-on: ubuntu-latest
@@ -113,11 +117,14 @@ jobs:
     # only run there are changed files
     if: ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
     steps:
+      - uses: actions/checkout@v2
+
       - name: Install PHP_CodeSniffer
         run: |
           curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
           php phpcs.phar --version
 
       - name: Check Coding Standard Violations
-        run: php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ steps.files.outputs.added_modified }}
+        run: |
+          php phpcs.phar --standard=aas-coding-ruleset.xml --extensions=php ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
 
