@@ -76,7 +76,7 @@ jobs:
       #     echo $(git diff --name-only --diff-filter=ACMRT ${{ github.sha }} | xargs)
 
       - name: List of all the modified php files
-      run: run: echo $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep .php$ | xargs)
+        run: echo $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep .php$ | xargs)
       #   run: |
       #     echo $(git diff --name-only --diff-filter=ACMRT | grep .php$ | xargs)
 
