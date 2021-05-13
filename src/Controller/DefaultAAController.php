@@ -17,8 +17,7 @@ class DefaultAAController extends AbstractController
             'path' => 'src/Controller/DefaultController.php',
         ]);*/
 
-        return $this->render(
-            'default/index.html.twig',
+        return $this->render('default/index.html.twig',
             [
                 'title' => 'sample title'
             ]
