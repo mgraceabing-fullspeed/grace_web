@@ -94,7 +94,7 @@ jobs:
           echo "List of status of all the modified files:" 
           git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
           echo "List of all the modified files excluding deleted files:"
-          if ${{ needs.get_changed_files.outputs.allFilteredACMRT }} then git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }}
+          if ${{ needs.get_changed_files.outputs.allFilteredACMRT }} (git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }})
 
       - name: PHP Files
         if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
