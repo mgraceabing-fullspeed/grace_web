@@ -85,7 +85,7 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo ${{ needs.get_changed_files.outputs.allUnfiltered }} | sed 's/../\\/&\n/g'
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }}
     #    run: |
     #      for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
     #        echo "Do something with this: ${changed_file}."
