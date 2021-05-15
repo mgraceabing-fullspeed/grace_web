@@ -60,11 +60,18 @@ jobs:
       allFilteredACMRT: ${{ steps.changedFiles.outputs.allFilteredACMRT }}
       phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
+  #  env:
+  #    lastRepoEventChange: 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
+      - name: check commit:
+        run: |
+            echo if ${{ github.event.before }} else ${{ github.event.pull_request.base.sha }}
 
       - name: Loop commits
         run: | 
