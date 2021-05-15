@@ -69,10 +69,10 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs)"
-          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs)"
-          echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
-          echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)"
+          echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)"
 
   print_changed_files:
     runs-on: ubuntu-latest
@@ -89,22 +89,22 @@ jobs:
       - name: Get status list of all the modified files
         if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+          git diff-tree --no-commit-id --name-status -r ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
 
       - name: Get list of all the modified files excluding deleted files
         if: ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
         run: |
-          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }}
+          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
 
       - name: Get List of status of all the modified php file
         if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
         run: |
-          git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+          git diff-tree --no-commit-id --name-status -r ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$
 
       - name: Get List of all the modified php files excluding deleted files (Will be validated for coding standard)
         if: ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
         run: |
-          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$
+          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$
 
 
   validate_coding_standard:
