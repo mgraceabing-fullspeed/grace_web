@@ -85,7 +85,7 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo ${{ needs.get_changed_files.outputs.allUnfiltered }} | xargs -t -I {} echo {}
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }}
 
       - name: Get list of all the modified files excluding deleted files
         run: |
