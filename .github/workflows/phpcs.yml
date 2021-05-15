@@ -66,6 +66,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Loop commits
+        run: | 
+          for commit in $(git rev-list ${{ github.event.before}}..${{ github.sha}}); do
+              git checkout $commit
+              echo "run test"
+          done
+
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
