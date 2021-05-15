@@ -69,7 +69,7 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo -e "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }})"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }})"
           echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs)"
           echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
@@ -85,7 +85,8 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo -e ${{ needs.get_changed_files.outputs.allUnfiltered }}
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }}
+          echo -e 'Hello, \nWorld!' 
     #    run: |
     #      for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
     #        echo "Do something with this: ${changed_file}."
