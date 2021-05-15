@@ -81,50 +81,35 @@ jobs:
     needs: get_changed_files
 
     # only run there are changed files
-    if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
+    # if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Get status list of all the modified files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
-    #    run: |
-    #      echo -e "\n" ${{ needs.get_changed_files.outputs.allUnfiltered }}
-
-      - name: Get list of all the modified files excluding deleted files
+      - name: All Files
+        if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          echo ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
+          echo "List of status of all the modified files:" 
+          git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
+          echo "List of all the modified files excluding deleted files:"
+          if ${{ needs.get_changed_files.outputs.allFilteredACMRT }} then git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }}
 
-  print_changed_php_files:
-    runs-on: ubuntu-latest
-
-    # require the first job to have ran and run this job in sequence
-    needs: get_changed_files
-
-    # only run there are changed files
-    if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      
-      - name: Get status list of all the modified php files
-        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
-    #    run: |
-    #      echo ${{ needs.get_changed_files.outputs.phpUnfiltered }}
-
-      - name: Get list of all the modified php files excluding deleted files
+      - name: PHP Files
+        if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
         run: |
-          echo ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
+          echo "List of status of all the modified php file:" 
+          git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+          echo "List of all the modified php files excluding deleted files:"
+          if ${{ needs.get_changed_files.outputs.phpFilteredACMRT }} git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$
+
 
   validate_coding_standard:
     runs-on: ubuntu-latest
 
     # require prev jobs to have ran and run this job in sequence
-    needs: [get_changed_files, print_all_changed_files, print_changed_php_files]
+    needs: get_changed_files
 
     # only run there are changed files
     if: ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
