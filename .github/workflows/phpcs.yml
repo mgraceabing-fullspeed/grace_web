@@ -101,7 +101,7 @@ jobs:
         run: |
           git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
 
-      - name: Get List of all the modified php files excluding deleted files
+      - name: Get List of all the modified php files excluding deleted files (Will be validated for coding standard)
         if: ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
         run: |
           git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$
