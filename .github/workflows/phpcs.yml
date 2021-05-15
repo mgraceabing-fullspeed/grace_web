@@ -69,13 +69,19 @@ jobs:
       - name: Get changed files excluding deleted files
         id: changedFiles
         run: |
-          echo -e "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }})"
+          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | xargs)"
           echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$ | xargs)"
           echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | xargs)"
           echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ github.sha }} | grep .php$ | xargs)"
 
   print_all_changed_files:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
     # require the first job to have ran and run this job in sequence
     needs: get_changed_files
@@ -84,12 +90,9 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
     steps:
       - name: Get status list of all the modified files
-        run: |
-          echo -e "\n" ${{ needs.get_changed_files.outputs.allUnfiltered }}
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
     #    run: |
-    #      for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
-    #        echo "Do something with this: ${changed_file}."
-    #      done
+    #      echo -e "\n" ${{ needs.get_changed_files.outputs.allUnfiltered }}
 
       - name: Get list of all the modified files excluding deleted files
         run: |
@@ -98,6 +101,12 @@ jobs:
   print_changed_php_files:
     runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
     # require the first job to have ran and run this job in sequence
     needs: get_changed_files
 
@@ -105,8 +114,9 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
     steps:
       - name: Get status list of all the modified php files
-        run: |
-          echo ${{ needs.get_changed_files.outputs.phpUnfiltered }}
+        run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
+    #    run: |
+    #      echo ${{ needs.get_changed_files.outputs.phpUnfiltered }}
 
       - name: Get list of all the modified php files excluding deleted files
         run: |
