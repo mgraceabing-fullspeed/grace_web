@@ -85,11 +85,6 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo -e "\n"
-          echo -e "${{ needs.get_changed_files.outputs.allUnfiltered }}"
-          echo -e 'Hello, \nWorld!' 
-          echo ${{ needs.get_changed_files.outputs.allUnfiltered }}
-          echo -e 'Hello, \nWorldqqqq!' 
           echo -e "${{ needs.get_changed_files.outputs.allUnfiltered }}"
     #    run: |
     #      for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
