@@ -77,18 +77,17 @@ jobs:
   print_all_changed_files:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
     # require the first job to have ran and run this job in sequence
     needs: get_changed_files
 
     # only run there are changed files
     if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Get status list of all the modified files
         run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }}
     #    run: |
@@ -101,18 +100,17 @@ jobs:
   print_changed_php_files:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
     # require the first job to have ran and run this job in sequence
     needs: get_changed_files
 
     # only run there are changed files
     if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
       - name: Get status list of all the modified php files
         run: git diff-tree --no-commit-id --name-status -r ${{ github.sha }} | grep .php$
     #    run: |
