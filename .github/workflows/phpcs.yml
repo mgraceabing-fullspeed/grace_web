@@ -18,8 +18,6 @@ on:
       - "**.php"
       - "aas-coding-ruleset.xml"
       - ".github/workflows/phpcs.yml"
-  check_run:
-    types: [created]
 
 # on:
   # Triggers the workflow on push or pull request events but only for the master branch
