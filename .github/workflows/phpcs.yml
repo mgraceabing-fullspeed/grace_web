@@ -61,7 +61,7 @@ jobs:
       phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
     env:
-     lastRepoEventChange: 'test'
+     lastRepoEventChange: 'this is env variable'
 
     steps:
       - name: Checkout repository
@@ -69,9 +69,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: check commit:
+      - name: check commit
         run: |
             echo ${{ env.lastRepoEventChange }}
+            echo if ${{ github.event.before }} (${{ github.event.before }}) else ${{ github.event.pull_request.base.sha }}
 
       - name: Loop commits
         run: | 
