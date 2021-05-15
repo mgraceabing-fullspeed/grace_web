@@ -85,7 +85,8 @@ jobs:
     steps:
       - name: Get status list of all the modified files
         run: |
-          echo echo '${ needs.get_changed_files.outputs.allUnfiltered }\n\n'
+          echo ${{ needs.get_changed_files.outputs.allUnfiltered }}
+          echo
     #    run: |
     #      for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
     #        echo "Do something with this: ${changed_file}."
