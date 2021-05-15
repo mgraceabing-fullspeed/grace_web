@@ -84,8 +84,12 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
     steps:
       - name: Get status list of all the modified files
+    #    run: |
+    #      print ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          print ${{ needs.get_changed_files.outputs.allUnfiltered }}
+          for changed_file in ${{ needs.get_changed_files.outputs.allUnfiltered }}; do
+            echo "Do something with this: ${changed_file}."
+          done
 
       - name: Get list of all the modified files excluding deleted files
         run: |

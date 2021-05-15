@@ -27,6 +27,6 @@ class DefaultDDDDController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'test-yes';
+        echo 'test-yesa';
     }
 }
