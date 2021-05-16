@@ -62,7 +62,7 @@ jobs:
 
     env:
       lastRepoEventChange: 'this is env variable'
-      aaaa: ''
+      aaaa: 'yes'
 
     steps:
       - name: Checkout repository
