@@ -58,13 +58,13 @@ jobs:
     #          echo "run test"
     #      done
 
-      - name: Generate output for changed files
-        id: changedFiles
-        run: |
-          echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | xargs)"
-          echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$ | xargs)"
-          echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | xargs)"
-          echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$ | xargs)"
+    #  - name: Generate output for changed files
+    #    id: changedFiles
+    #    run: |
+    #      echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | xargs)"
+    #      echo "::set-output name=phpUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$ | xargs)"
+    #      echo "::set-output name=allFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | xargs)"
+    #      echo "::set-output name=phpFilteredACMRT::$(git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$ | xargs)"
 
 
   print_changed_files:
