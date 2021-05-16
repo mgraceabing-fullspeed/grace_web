@@ -76,7 +76,7 @@ jobs:
               echo "::set-output name=lastRepoEventChange::$(${{ github.event.pull_request.base.sha }})"
             else
               echo before hash: ${{ github.event.before }}
-              echo "::set-output name=lastRepoEventChange::$(${{ github.event.before }})"
+              echo "::set-output name=lastRepoEventChange::${{ github.event.before }}"
             fi
 
       - name: echo commit hash
