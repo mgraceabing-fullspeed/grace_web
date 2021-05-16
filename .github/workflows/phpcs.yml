@@ -76,10 +76,10 @@ jobs:
             echo aaaa: ${{ env.aaaa }}
             if ${{ github.event.pull_request.base.sha != ''}}; then
               echo pull request hash: this is has pr
-              ${{ env.aaaa = github.event.pull_request.base.sha }}
+              echo ${{ github.event.pull_request.base.sha }} >> ${{ env.aaaa }}
             else
               echo before hash: ${{ github.event.before }}
-              ${{ env.aaaa = github.event.before }}
+              echo ${{ github.event.before }} >> ${{ env.aaaa }}
             fi
             echo aaaa last: ${{ env.aaaa }}
 
