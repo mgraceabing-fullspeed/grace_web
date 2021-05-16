@@ -72,8 +72,8 @@ jobs:
       - name: check commit
         run: |
             echo ${{ env.lastRepoEventChange }}
-            if ${{ github.event.pull_request.base.sha }}; then
-              echo pull request hash: this is pr hash
+            if ${{ github.event.pull_request.base.sha == ''}}; then
+              echo pull request hash: this is has no pr
             else
               echo before hash: ${{ github.event.before}}
             fi
