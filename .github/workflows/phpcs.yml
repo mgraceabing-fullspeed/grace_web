@@ -73,10 +73,10 @@ jobs:
         run: |
             if ${{ github.event.pull_request.base.sha != ''}}; then
               echo pull request hash: this is has pr
-              echo "::set-output name=lastRepoEventChange::$(github.event.pull_request.base.sha)"
+              echo "::set-output name=lastRepoEventChange::$(${{ github.event.pull_request.base.sha }})"
             else
               echo before hash: ${{ github.event.before }}
-              echo "::set-output name=lastRepoEventChange::$(github.event.before)"
+              echo "::set-output name=lastRepoEventChange::$(${{ github.event.before }})"
             fi
 
       - name: echo commit hash
