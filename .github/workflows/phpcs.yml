@@ -49,7 +49,7 @@ jobs:
 
       - name: Print last commit in repo
         run: |
-          echo Commit ID: ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
+          echo ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
 
     #  - name: Loop commits
     #    run: | 
