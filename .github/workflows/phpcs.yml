@@ -55,14 +55,12 @@ jobs:
 
     # Map a step output to a job output
     outputs:
+      lastRepoEventChange: ${{ steps.changedFiles.outputs.lastRepoEventChange }}
       allUnfiltered: ${{ steps.changedFiles.outputs.allUnfiltered }}
       phpUnfiltered: ${{ steps.changedFiles.outputs.phpUnfiltered }}
       allFilteredACMRT: ${{ steps.changedFiles.outputs.allFilteredACMRT }}
       phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
-    env:
-      lastRepoEventChange: 'this is env variable'
-      aaaa: 'yes'
 
     steps:
       - name: Checkout repository
@@ -71,18 +69,19 @@ jobs:
           fetch-depth: 0
 
       - name: check commit
+        id: lastEventHash
         run: |
-            echo lastRepoEventChange: ${{ env.lastRepoEventChange }}
-            echo aaaa: ${{ env.aaaa }}
             if ${{ github.event.pull_request.base.sha != ''}}; then
               echo pull request hash: this is has pr
-              echo ${{ github.event.pull_request.base.sha }} >> ${{ env.aaaa }}
+              echo "::set-output name=lastRepoEventChange::$(github.event.pull_request.base.sha)"
             else
               echo before hash: ${{ github.event.before }}
-              echo ${{ github.event.before }} >> ${{ env.aaaa }}
+              echo "::set-output name=lastRepoEventChange::$(github.event.before)"
             fi
-            echo aaaa last: ${{ env.aaaa }}
 
+      - name: echo commit hash
+        run: |
+          echo ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
 
       - name: Loop commits
         run: | 
