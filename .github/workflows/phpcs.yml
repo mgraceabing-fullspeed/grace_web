@@ -61,7 +61,13 @@ jobs:
       phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
     env:
-     lastRepoEventChange: 'this is env variable'
+      lastRepoEventChange: 'this is env variable'
+      aaaa: |
+        if ${{ github.event.pull_request.base.sha != ''}}; then
+          ${{ github.event.pull_request.base.sha != ''}}
+        else
+          ${{ github.event.before}}
+        fi
 
     steps:
       - name: Checkout repository
@@ -71,9 +77,10 @@ jobs:
 
       - name: check commit
         run: |
-            echo ${{ env.lastRepoEventChange }}
-            if ${{ github.event.pull_request.base.sha == ''}}; then
-              echo pull request hash: this is has no pr
+            echo lastRepoEventChange: ${{ env.lastRepoEventChange }}
+            echo aaaa: ${{ env.aaaa }}
+            if ${{ github.event.pull_request.base.sha != ''}}; then
+              echo pull request hash: this is has pr
             else
               echo before hash: ${{ github.event.before}}
             fi
