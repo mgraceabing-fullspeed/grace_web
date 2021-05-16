@@ -62,7 +62,6 @@ jobs:
 
     env:
      lastRepoEventChange: 'this is env variable'
-     nextVariable: if ${{ github.event.before }} else ${{ github.event.pull_request.base.sha }}
 
     steps:
       - name: Checkout repository
@@ -73,7 +72,11 @@ jobs:
       - name: check commit
         run: |
             echo ${{ env.lastRepoEventChange }}
-            echo ${{ env.nextVariable }}
+            if ${{ github.event.pull_request.base.sha }}; then
+              echo pull request hash: ${{ github.event.pull_request.base.sha }}
+            else
+              echo before hash: ${{ github.event.before}}
+            fi
 
       - name: Loop commits
         run: | 
