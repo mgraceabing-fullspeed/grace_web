@@ -82,7 +82,7 @@ jobs:
       - name: Get status list of all the modified files
         if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          echo git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
+          echo $(git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }})
 
       - name: Get list of all the modified files excluding deleted files
         if: ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
