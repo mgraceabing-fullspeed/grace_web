@@ -79,10 +79,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Print last commit in repo
+        run: |
+          echo Commit ID: ${{ needs.get_changed_files.outputs.lastRepoEventChange }}
+
       - name: Get status list of all the modified files
         if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          echo $(git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }})
+          git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
 
       - name: Get list of all the modified files excluding deleted files
         if: ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
