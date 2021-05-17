@@ -27,6 +27,6 @@ class DefaultWWWController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'test-yesaaaszasddaaaaaaaxaaaaaaaaaaassss';
+        echo 'test-yesaaaszasddaaaaaaaaaxaaaaaaaaaaassss';
     }
 }
