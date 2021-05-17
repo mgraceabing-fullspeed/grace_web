@@ -38,7 +38,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get Last Commit in Repo
+      - name: Get Last Event Hash in Repo
         id: lastEventHash
         run: |
             if ${{ github.event.pull_request.base.sha != '' }}; then
@@ -47,10 +47,10 @@ jobs:
               echo "::set-output name=lastRepoEventChange::${{ github.event.before }}"
             fi
 
-      - name: Print Commit Id's
+      - name: Print Event Hashes
         run: |
-          echo Last Commit ID in Repo: ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
-          echo Latest Commit ID: ${{ github.sha }}
+          echo Last Event Hash in Repo: ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
+          echo Latest Event Hash: ${{ github.sha }}
 
       - name: Generate Output for Changed Files
         id: changedFiles
