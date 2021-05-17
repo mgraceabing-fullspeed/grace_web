@@ -24,9 +24,4 @@ class DefaultController extends AbstractController
             ]
         );
     }
-
-    public function FunctionName()
-    {
-        echo 'tests';
-    }
 }
