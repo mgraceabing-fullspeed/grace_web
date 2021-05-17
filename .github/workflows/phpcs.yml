@@ -82,22 +82,22 @@ jobs:
       - name: Get status list of all the modified files
         if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
-          git diff-tree --no-commit-id --name-status -r echo ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
+          echo git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
 
       - name: Get list of all the modified files excluding deleted files
         if: ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
         run: |
-          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT echo ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
+          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
 
       - name: Get List of status of all the modified php file
         if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
         run: |
-          git diff-tree --no-commit-id --name-status -r echo ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
+          git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
 
       - name: Get List of all the modified php files excluding deleted files (Will be validated for coding standard)
         if: ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
         run: |
-          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT echo ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
+          git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
 
 
   validate_coding_standard:
