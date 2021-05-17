@@ -33,12 +33,12 @@ jobs:
       phpFilteredACMRT: ${{ steps.changedFiles.outputs.phpFilteredACMRT }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Get last commit in repo
+      - name: Get Commit Id's
         id: lastEventHash
         run: |
             if ${{ github.event.pull_request.base.sha != '' }}; then
@@ -46,19 +46,10 @@ jobs:
             else
               echo "::set-output name=lastRepoEventChange::${{ github.event.before }}"
             fi
+            echo Last Commit ID in Repo: ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
+            echo Latest Commit ID: ${{ github.sha }}
 
-      - name: Print last commit in repo
-        run: |
-          echo Commit ID: ${{ steps.lastEventHash.outputs.lastRepoEventChange }}
-
-    #  - name: Loop commits
-    #    run: | 
-    #      for commit in $(git rev-list ${{ github.event.before}} ${{ github.event.pull_request.base.sha }}..${{ github.sha}}); do
-    #          git checkout $commit
-    #          echo "run test"
-    #      done
-
-      - name: Generate output for changed files
+      - name: Generate Output for Changed Files
         id: changedFiles
         run: |
           echo "::set-output name=allUnfiltered::$(git diff-tree --no-commit-id --name-status -r ${{ steps.lastEventHash.outputs.lastRepoEventChange }} ${{ github.sha }} | xargs)"
@@ -70,35 +61,31 @@ jobs:
   print_changed_files:
     runs-on: ubuntu-latest
 
-    # require the first job to have ran and run this job in sequence
+    # require the first job to have ran, then run this job in sequence
     needs: get_changed_files
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Print last commit in repo
-        run: |
-          echo Commit ID: ${{ needs.get_changed_files.outputs.lastRepoEventChange }}
-
-      - name: Get status list of all the modified files
+      - name: Get Status List of All the Modified Files
         if: ${{ needs.get_changed_files.outputs.allUnfiltered }}
         run: |
           git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
 
-      - name: Get list of all the modified files excluding deleted files
+      - name: Get List of All the Modified Files Excluding Deleted Files
         if: ${{ needs.get_changed_files.outputs.allFilteredACMRT }}
         run: |
           git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }}
 
-      - name: Get List of status of all the modified php file
+      - name: Get List of Status of All the Modified PHP File
         if: ${{ needs.get_changed_files.outputs.phpUnfiltered }}
         run: |
           git diff-tree --no-commit-id --name-status -r ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
 
-      - name: Get List of all the modified php files excluding deleted files (Will be validated for coding standard)
+      - name: Get List of All the Modified PHP Files Excluding Deleted Files (Will be validated for coding standard)
         if: ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
         run: |
           git diff-tree --no-commit-id --name-only -r --diff-filter=ACMRT ${{ needs.get_changed_files.outputs.lastRepoEventChange }} ${{ github.sha }} | grep .php$
@@ -107,7 +94,7 @@ jobs:
   validate_coding_standard:
     runs-on: ubuntu-latest
 
-    # require prev jobs to have ran and run this job in sequence
+    # require prev jobs to have ran, then run this job in sequence
     needs: [get_changed_files, print_changed_files]
 
     # only run there are changed files
