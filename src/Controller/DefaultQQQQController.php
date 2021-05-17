@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultWWWController extends AbstractController
+class DefaultQQQQController extends AbstractController
 {
     /**
      * @Route("/default", name="default")
@@ -27,6 +27,6 @@ class DefaultWWWController extends AbstractController
 
     public function FunctionName($value='')
     {
-        echo 'testsa';
+        echo 'test';
     }
 }
