@@ -101,7 +101,7 @@ jobs:
     needs: [get_changed_files, print_changed_files]
 
     # only run there are changed files
-    if: ${{needs.get_changed_files.outputs.phpFilteredACMRT}}
+    if: ${{ needs.get_changed_files.outputs.phpFilteredACMRT }}
     steps:
       - uses: actions/checkout@v2
 
