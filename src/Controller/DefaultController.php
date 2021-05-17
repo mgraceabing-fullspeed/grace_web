@@ -25,7 +25,8 @@ class DefaultController extends AbstractController
         );
     }
 
-    publi function tets_aa(){
+    publi function tets_aa(
+    {
         echo 'test';
     }
 }
